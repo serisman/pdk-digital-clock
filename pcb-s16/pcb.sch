@@ -107,11 +107,11 @@ Text Label 5850 2600 2    50   ~ 0
 PB2
 Text Label 5850 2700 2    50   ~ 0
 PB3
-Text Label 5750 3250 2    50   ~ 0
+Text Label 5800 3100 2    50   ~ 0
 PB4
-Text Label 5750 3350 2    50   ~ 0
+Text Label 5800 3200 2    50   ~ 0
 PB5
-Text Label 6150 3050 0    50   ~ 0
+Text Label 6200 2900 0    50   ~ 0
 PB7
 Text Label 4350 2400 2    50   ~ 0
 PB4
@@ -235,12 +235,12 @@ $EndComp
 $Comp
 L Device:R_Pack04 RN2
 U 1 1 5F13C2E7
-P 5950 3250
-F 0 "RN2" V 6150 3250 50  0000 C CNN
-F 1 "R_Pack04" V 5624 3250 50  0001 C CNN
-F 2 "Resistor_SMD:R_Array_Convex_4x0603" V 6225 3250 50  0001 C CNN
-F 3 "~" H 5950 3250 50  0001 C CNN
-	1    5950 3250
+P 6000 3100
+F 0 "RN2" V 6200 3100 50  0000 C CNN
+F 1 "R_Pack04" V 5674 3100 50  0001 C CNN
+F 2 "Resistor_SMD:R_Array_Convex_4x0603" V 6275 3100 50  0001 C CNN
+F 3 "~" H 6000 3100 50  0001 C CNN
+	1    6000 3100
 	0    -1   1    0   
 $EndComp
 Text Label 7050 3300 3    50   ~ 0
@@ -360,43 +360,43 @@ Wire Wire Line
 $Comp
 L Connector:USB_B_Micro J1
 U 1 1 5F1603EF
-P 3400 4400
-F 0 "J1" H 3457 4867 50  0000 C CNN
-F 1 "USB_B_Micro" H 3457 4776 50  0000 C CNN
-F 2 "modules:USB_Micro_B_Male" H 3550 4350 50  0001 C CNN
-F 3 "~" H 3550 4350 50  0001 C CNN
-	1    3400 4400
+P 3450 4300
+F 0 "J1" H 3507 4767 50  0000 C CNN
+F 1 "USB_B_Micro" H 3507 4676 50  0000 C CNN
+F 2 "modules:USB_Micro_B_Male" H 3600 4250 50  0001 C CNN
+F 3 "~" H 3600 4250 50  0001 C CNN
+	1    3450 4300
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3300 4800 3400 4800
+	3350 4700 3450 4700
 Wire Wire Line
-	3700 4600 3700 4800
+	3750 4500 3750 4700
 Wire Wire Line
-	3700 4800 3400 4800
-Connection ~ 3400 4800
+	3750 4700 3450 4700
+Connection ~ 3450 4700
 $Comp
 L power:GND #PWR0109
 U 1 1 5F162B7F
-P 3400 4800
-F 0 "#PWR0109" H 3400 4550 50  0001 C CNN
-F 1 "GND" V 3405 4672 50  0000 R CNN
-F 2 "" H 3400 4800 50  0001 C CNN
-F 3 "" H 3400 4800 50  0001 C CNN
-	1    3400 4800
+P 3450 4700
+F 0 "#PWR0109" H 3450 4450 50  0001 C CNN
+F 1 "GND" V 3455 4572 50  0000 R CNN
+F 2 "" H 3450 4700 50  0001 C CNN
+F 3 "" H 3450 4700 50  0001 C CNN
+	1    3450 4700
 	1    0    0    -1  
 $EndComp
-NoConn ~ 3700 4400
-NoConn ~ 3700 4500
+NoConn ~ 3750 4300
+NoConn ~ 3750 4400
 $Comp
 L power:VDD #PWR0110
 U 1 1 5F163A89
-P 3700 4200
-F 0 "#PWR0110" H 3700 4050 50  0001 C CNN
-F 1 "VDD" V 3717 4328 50  0000 L CNN
-F 2 "" H 3700 4200 50  0001 C CNN
-F 3 "" H 3700 4200 50  0001 C CNN
-	1    3700 4200
+P 3750 4100
+F 0 "#PWR0110" H 3750 3950 50  0001 C CNN
+F 1 "VDD" V 3767 4228 50  0000 L CNN
+F 2 "" H 3750 4100 50  0001 C CNN
+F 3 "" H 3750 4100 50  0001 C CNN
+	1    3750 4100
 	0    1    1    0   
 $EndComp
 Wire Wire Line
@@ -407,23 +407,23 @@ Wire Wire Line
 	6250 2600 6500 2600
 Wire Wire Line
 	6500 2700 6250 2700
-Text Label 5750 3150 2    50   ~ 0
-R7
-Text Label 6150 3250 0    50   ~ 0
-R3
-Text Label 6150 3350 0    50   ~ 0
-R4
+Text Label 5800 3000 2    50   ~ 0
+g
+Text Label 6200 3100 0    50   ~ 0
+e
+Text Label 6200 3200 0    50   ~ 0
+f
 Text Label 6500 2800 2    50   ~ 0
-R3
+e
 Text Label 6500 2900 2    50   ~ 0
-R4
+f
 Text Label 6500 3000 2    50   ~ 0
-R7
+g
 Text Label 6500 3100 2    50   ~ 0
-R8
-Text Label 5750 3050 2    50   ~ 0
-R8
-Text Label 6150 3150 0    50   ~ 0
+dp
+Text Label 5800 2900 2    50   ~ 0
+dp
+Text Label 6200 3000 0    50   ~ 0
 PB6
 Wire Wire Line
 	7050 3300 7050 4050
