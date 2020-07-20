@@ -1,7 +1,8 @@
 # pcb-s16 ([pdk-digital-clock](https://github.com/serisman/pdk-digital-clock/))
 
-##### Schematic for 16-pin (PFS154, PFS173, PMS152, or PMS154C)
-![Schematic](https://github.com/serisman/pdk-digital-clock/blob/master/img/Schematic.png?raw=true)
+### Schematic
+(for 16-pin PFS154, PFS173, PMS152, or PMS154C)
+> ![Schematic](https://github.com/serisman/pdk-digital-clock/blob/master/img/Schematic.png?raw=true)
 
 ### PCB
 
@@ -9,7 +10,7 @@ This PCB design was created with KiCad, and has been [shared on OSHPARK](https:/
 There are also gerber files available in the [output/gerber/](output/gerber/) directory.
 
 This uses the [SLR0394DRC5BD](https://lcsc.com/product-detail/Led-Segment-Display_SUNLIGHT-SLR0394DRA5BD_C225902.html) 4-digit 7-segment common cathode 'time' display,
-which sits over the top of the 74HC595 and (2) 4x resistor packs.
+which sits over the top of the 74HC595 and the (2) 4x resistor packs.
 The 74HC595 is used to drive the (4) 7-segment digits, (2) outputs per digit for extra current sink capabilities.
 The segments themselves are driven directly by the Port B outputs of the Padauk microcontroller.
 
