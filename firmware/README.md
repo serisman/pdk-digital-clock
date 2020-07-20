@@ -1,4 +1,4 @@
-# firmware (pdk-digital-clock)
+# firmware ([pdk-digital-clock](https://github.com/serisman/pdk-digital-clock/))
 
 ### Toolchain:
 - The open-source [Small Device C Compiler (SDCC)](http://sdcc.sourceforge.net/)
