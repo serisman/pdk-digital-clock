@@ -1,6 +1,5 @@
 EESchema Schematic File Version 4
-LIBS:pcb-cache
-EELAYER 26 0
+EELAYER 30 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -127,7 +126,7 @@ U 1 1 5F12EB82
 P 3850 2950
 F 0 "Y1" V 3850 3000 50  0000 R CNN
 F 1 "32.768kHz" V 3850 2850 50  0000 R CNN
-F 2 "Crystal:Crystal_DS26_D2.0mm_L6.0mm_Horizontal" H 3850 2950 50  0001 C CNN
+F 2 "Crystal:Crystal_C26-LF_D2.1mm_L6.5mm_Horizontal" H 3850 2950 50  0001 C CNN
 F 3 "~" H 3850 2950 50  0001 C CNN
 	1    3850 2950
 	0    -1   -1   0   
