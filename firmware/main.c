@@ -43,15 +43,11 @@ uint8_t _tmp, prev_quarter_seconds, btn_ctr, display_mode, config_mode, config_c
 //
 //  Rotates to and outputs a single digit 'register' for a 4-digit 7-segment display.
 //  NOTE: This should be called multiple 100's of times a second to light up all the digits for 'persistence of vision'.
+//    This method has been written in assembly to make it as small and fast as possible.
 //  This uses a 74HC595 as a digit 'driver' which provides two benefits:
 //   1. Enables 4 (or more) outputs (digits) from 3 IO pins.
 //   2. Enables a higher current sink for each digit than IO pins would otherwise allow.
-//  There is a small amount of flicker (particularly with varying lit segments for the same digit) due to:
-//   - Abuse of the IO pins (i.e. no current limiting resistors. We are relying on the week IO drive characteristics).
-//   - Abuse of the 74HC595 output pins (i.e. varying/over current conditions when varying/most/all segments are lit).
-//  Ideally, one would use current limiting resistors on the segments, and a proper digit driver (i.e. ULN2003),
-//   but for a cheap/demo/experiment version it seems good enough without the additional supporting components.
-//  We can double up the 74HC595 output pins (i.e. 2 per digit) for extra current sink capability (further reduces the flicker)
+//  We double up the 74HC595 output pins (i.e. 2 per digit) for extra current sink capability.
 //
 //  Assumes (#define'd above):
 //   Segments[a-g,dp] are mapped to PB[0-7]
