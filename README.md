@@ -20,6 +20,16 @@ A single push button is used to set the time, with the following 'user interface
 This digital clock is powered via micro USB cable, although it should work at much lower voltages as well.
 It isn't really suitable for long-term battery operation, as the LED based 7-segment display consumes enough energy that it wouldn't last very long.
 
+### Power Consumption (displaying 12:00)
+
+- @ 5.0V = ~19mA
+- @ 4.5V = ~16mA
+- @ 4.0V = ~13mA
+- @ 3.5V = ~10mA
+- @ 3.0V = ~7mA
+- @ 2.5V = ~4mA
+- @ 2.0V = ~1mA
+
 ### Schematic
 (for 16-pin PFS154, PFS173, PMS152, or PMS154C)
 > ![Schematic](https://github.com/serisman/pdk-digital-clock/blob/master/pcb-s16/output/Schematic.png?raw=true)
