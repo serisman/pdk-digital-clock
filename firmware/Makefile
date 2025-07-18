@@ -49,11 +49,11 @@ all: size
 print-%: ; @echo $* = $($*)
 
 $(BUILD_DIR)/%.rel: %.c
-	@mkdir -p $(dir $@)
+	-mkdir -p $(dir $@)
 	$(COMPILE) -o $@ $<
 
 $(OUTPUT).ihx: $(OBJECTS)
-	@mkdir -p $(dir $(OUTPUT))
+	-mkdir -p $(dir $(OUTPUT))
 	$(LINK) --out-fmt-ihx -o $(OUTPUT).ihx $(OBJECTS)
 
 $(OUTPUT).bin: $(OUTPUT).ihx

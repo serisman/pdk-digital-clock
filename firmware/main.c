@@ -54,12 +54,12 @@ uint8_t _tmp, prev_quarter_seconds, btn_ctr, display_mode, config_mode, config_c
 //   74HC595 (14) DS - DATA is on PA3
 //   74HC595 (11) SH_CP - CLOCK is on PA0
 //   74HC595 (12) ST_CP - LATCH is on PA4
-void display_next_digit() {
+void display_next_digit(void) {
 __asm
 	;// Rotate to next digit
-  set0  f, c
+  set0.io  f, c
   t0sn  _current_digit_mask, #7
-    set1  f, c
+    set1.io  f, c
   slc   _current_digit_mask
 
 	;// Shift out /EN for all digits to 74HC595
@@ -67,15 +67,15 @@ __asm
 	mov   __tmp, a
 	mov   a, #8
 00001$:
-	set1  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
+	set1.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
 	t0sn  __tmp, #7
-		set0  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
-	set1  _REG(PIN_SR_CLOCK), #_BIT(PIN_SR_CLOCK)
-	set0  _REG(PIN_SR_CLOCK), #_BIT(PIN_SR_CLOCK)
+		set0.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
+	set1.io  _REG(PIN_SR_CLOCK), #_BIT(PIN_SR_CLOCK)
+	set0.io  _REG(PIN_SR_CLOCK), #_BIT(PIN_SR_CLOCK)
 	sl    __tmp
 	dzsn  a
 		goto  00001$
-	set1  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
+	set1.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
 
 	;// Get the current digit's segments
 	t0sn  _current_digit_mask, #0
@@ -91,17 +91,17 @@ __asm
 	;// Disable the previous digit's segments
 	disgint
 	mov   a, #0b00000000
-	mov   _REG(PORT_SEGMENTS), a
+	mov.io   _REG(PORT_SEGMENTS), a
 
 	;// Latch 74HC595 - Enables the digit that was set low
-	set1  _REG(PIN_SR_LATCH), #_BIT(PIN_SR_LATCH)
+	set1.io  _REG(PIN_SR_LATCH), #_BIT(PIN_SR_LATCH)
 
 	;// Enable the current digit's segments
 	mov   a, __tmp
-	mov   _REG(PORT_SEGMENTS), a
+	mov.io   _REG(PORT_SEGMENTS), a
 	engint
 
-	set0  _REG(PIN_SR_LATCH), #_BIT(PIN_SR_LATCH)
+	set0.io  _REG(PIN_SR_LATCH), #_BIT(PIN_SR_LATCH)
 
 __endasm;
 }
@@ -130,7 +130,7 @@ __asm
 	;// Make sure bcd is <= 9 (otherwise unexpected results would occur!)
 	mov	a, #9
 	sub	a, _bcd_to_7segment_PARM_1
-	t0sn	f, c
+	t0sn.io	f, c
 		ret	#0b00000000
 	;// Lookup and return 7-segment representation
 	mov   a, _bcd_to_7segment_PARM_1
@@ -151,7 +151,7 @@ __endasm;
 
 // Increment the clock's time values with cascading roll-overs
 // NOTE: This needs to be called EXACTLY once a second!
-void update_clock() {
+void update_clock(void) {
   if (++seconds_01 == 10) {
     seconds_01=0;
     if (++seconds_10 == 6) {
@@ -177,7 +177,7 @@ void update_clock() {
 }
 
 // Write the current time (seconds or hours:minutes) to the 4x 7-segment digit 'registers'
-void update_time_display() {
+void update_time_display(void) {
 	if (display_mode) {
     // Seconds
 		digit1 = 0b01101101;    // 'S'
@@ -210,7 +210,7 @@ void update_time_display() {
 }
 
 // Write the current config variable to the 4x 7-segment digit 'registers'
-void update_config_display() {
+void update_config_display(void) {
 	digit1=digit2=digit3=digit4=0;
 
 	if (/*config_mode == 1 || config_mode == 2*/ config_mode < 3) {
@@ -251,7 +251,7 @@ void update_config_display() {
 }
 
 // Write the appropriate 'screen' to the 4x 7-segment digit 'registers'
-void update_display() {
+void update_display(void) {
   if (!config_mode) {
     update_time_display();
   } else {
@@ -260,7 +260,7 @@ void update_display() {
 }
 
 // Increment the current config variable with reset on rollover
-void increment_config_value() {
+void increment_config_value(void) {
 	switch (config_mode) {
 		case 1: if (++seconds_01 == 10) seconds_01 = 0;	break;
 		case 2:	if (++seconds_10 == 6) seconds_10 = 0;	break;
@@ -273,7 +273,7 @@ void increment_config_value() {
 }
 
 // Check the button's state and process button up/down events
-void process_btn() {
+void process_btn(void) {
 	if (isPinLow(PIN_BTN)) {
 		if (!btn_ctr) {               // On button down
 			btn_ctr = 1;
@@ -306,7 +306,7 @@ void process_btn() {
 }
 
 // Process things that we want done every 1/4 seconds
-void every_quarter_second() {
+void every_quarter_second(void) {
 	if ((quarter_seconds & 0b00000011) == 0b00000011) {
     update_clock();
   }
@@ -320,7 +320,7 @@ void every_quarter_second() {
 }
 
 // Main program
-void main() {
+void main(void) {
   // Make sure PA7/PA6 is Disabled for External Crystal (recommended for all ICs)
   // Make sure PA5 is Enabled as input for Button (needed by PMS152/PFS173)
   PADIER = 0b00100000;
@@ -367,18 +367,18 @@ void interrupt(void) __interrupt(0) __naked {
 //		INTRQ &= ~INTRQ_T16;
 //	}
 __asm
-	t1sn	_REG(INTRQ), #INTRQ_T16_BIT
+	t1sn.io	_REG(INTRQ), #INTRQ_T16_BIT
 		goto  00001$
 	push  af
 	inc   _quarter_seconds
-	set0	_REG(INTRQ), #INTRQ_T16_BIT
+	set0.io	_REG(INTRQ), #INTRQ_T16_BIT
 	pop   af
 00001$:
 	reti
 __endasm;
 }
 
-unsigned char _sdcc_external_startup(void) {
+unsigned char __sdcc_external_startup(void) {
 
 #if defined(PFS154)
   PDK_SET_FUSE(FUSE_SECURITY_OFF|FUSE_IO_DRV_NORMAL|FUSE_BOOTUP_FAST);
