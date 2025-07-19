@@ -1,10 +1,11 @@
 # pdk-digital-clock
 A 4-digit 7-segment digital clock, based on the inexpensive 8-bit Padauk microcontrollers
 
-This uses the [SLR0394DRC5BD](https://lcsc.com/product-detail/Led-Segment-Display_SUNLIGHT-SLR0394DRA5BD_C225902.html) 4-digit 7-segment common cathode 'time' display,
-which sits over the top of the 74HC595 and the (2) 4x resistor packs.
-The 74HC595 is used to drive the (4) 7-segment digits, and uses (2) outputs per digit for extra current sink capabilities.
+This project uses the [SLR0394DRC5BD](https://lcsc.com/product-detail/Led-Segment-Display_SUNLIGHT-SLR0394DRA5BD_C225902.html) 4-digit 7-segment common cathode 'time' display,
+which sits over the top of a 74HC595 and (2) 4x resistor packs.
+The 74HC595 is used to enable each of the four 7-segment digits, one at a time, using two output pins per digit for extra current sink capabilities.
 The segments themselves are driven directly by the Port B outputs of the Padauk microcontroller.
+Each of the four 7-segment digits is enabled and updated, one at a time, several 10's of times a second.
 
 ### Default Firmware (Push Button)
 - Link: [Firmware](firmware/)
@@ -24,11 +25,11 @@ This makes it easier to keep time updated and synced after it naturally drifts d
 
 To set/update time, connect a Serial UART's TX pin (TTL level) to pin PA5 (PIN_RX):
 - Send the following 5 bytes @9600 baud (1 start bit, 8 data bits, 1 stop bit, no parity):
-    - start byte: 0x00
-    - hours byte: using bcd notation, bit[7] is am_pm indicator, bits[5:4] is hours_10, bits[3-0] is hours_01
-    - minutes byte: using bcd notation, bits[6:4] is minutes_10, bits[3-0] is minutes_01
-    - seconds byte: using bcd notation, bits[6:4] is seconds_10, bits[3-0] is seconds_01
-    - parity byte: the sum of all preceding data bytes.
+    - `start byte`: 0x00
+    - `hours byte`: using bcd notation, bit[7] is am_pm indicator, bits[5:4] is hours_10, bits[3:0] is hours_01
+    - `minutes byte`: using bcd notation, bits[6:4] is minutes_10, bits[3:0] is minutes_01
+    - `seconds byte`: using bcd notation, bits[6:4] is seconds_10, bits[3:0] is seconds_01
+    - `parity byte`: the sum of all preceding data bytes.
 
 ### Power Consumption
 
