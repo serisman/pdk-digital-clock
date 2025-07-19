@@ -9,7 +9,7 @@ To set/update time, connect a Serial UART's TX pin (TTL level) to pin PA5 (PIN_R
   - `hours byte`: using bcd notation, bit[7] is am_pm indicator, bits[5:4] is hours_10, bits[3:0] is hours_01
   - `minutes byte`: using bcd notation, bits[6:4] is minutes_10, bits[3:0] is minutes_01
   - `seconds byte`: using bcd notation, bits[6:4] is seconds_10, bits[3:0] is seconds_01
-  - `parity byte`: the sum of all preceding data bytes.
+  - `checksum byte`: the sum of all preceding data bytes.
 
 ### Toolchain:
 - The open-source [Small Device C Compiler (SDCC)](http://sdcc.sourceforge.net/)
@@ -36,7 +36,7 @@ make run
 Edit the variables at the top of the Makefile to:
 - **DEVICE**: Use a different Padauk MCU (defaults to PFS154)
 - **F_CPU**: Use a different frequency for the system clock (defaults to 524.288 kHz, i.e. IHRC/32)
-  > Note: Only valid choice is: 524288 to use the IHRC.  This values make it easier for timekeeping (although true accuracy only comes from using an external crystal).
+  > Note: Only valid choice is: 524288 to use the IHRC.  This value make it easier for timekeeping (although true accuracy only comes from using an external crystal).
           Changing this would also require changes to the UART receive code which has very precise timing requirements.
 - **TARGET_VDD_MV**: Use a different voltage while calibrating the internal oscillator (IHRC or ILRC) (defaults to 3300mV)
 - **TARGET_VDD**: Use a different voltage while the IC is operating (defaults to 3.3V)

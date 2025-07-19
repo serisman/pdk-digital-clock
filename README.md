@@ -29,7 +29,7 @@ To set/update time, connect a Serial UART's TX pin (TTL level) to pin PA5 (PIN_R
     - `hours byte`: using bcd notation, bit[7] is am_pm indicator, bits[5:4] is hours_10, bits[3:0] is hours_01
     - `minutes byte`: using bcd notation, bits[6:4] is minutes_10, bits[3:0] is minutes_01
     - `seconds byte`: using bcd notation, bits[6:4] is seconds_10, bits[3:0] is seconds_01
-    - `parity byte`: the sum of all preceding data bytes.
+    - `checksum byte`: the sum of all preceding data bytes.
 
 ### Power Consumption
 

@@ -242,17 +242,17 @@ __asm
 __endasm;
 }
 
-// Receive hours, minutes, seconds, and parity from UART, and update time variables if valid.
+// Receive hours, minutes, seconds, and checksum from UART, and update time variables if valid.
 // This should only be called after successful confirmation of transmission of start byte (0x00).
 void receive_time(void) {
   setPin(PIN_DEBUG);
   uint8_t hours = receive_byte();
   uint8_t minutes = receive_byte();
   uint8_t seconds = receive_byte();
-  uint8_t parity = receive_byte();
+  uint8_t checksum = receive_byte();
   clearPin(PIN_DEBUG);
 
-  if (parity == hours + minutes + seconds) {
+  if (checksum == hours + minutes + seconds) {
     am_pm = hours >> 7;
     hours_10 = (hours >> 4) & 0b11;
     hours_01 = hours & 0b1111;
