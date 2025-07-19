@@ -69,7 +69,10 @@ size: build
 
 program: size
 	$(EASYPDKPROG) -n $(DEVICE) write $(OUTPUT).ihx
-
+erase:
+	$(EASYPDKPROG) -n $(DEVICE) erase
+probe:
+	$(EASYPDKPROG) probe
 run:
 	$(EASYPDKPROG) -r $(TARGET_VDD) start
 

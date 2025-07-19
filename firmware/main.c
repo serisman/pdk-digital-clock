@@ -408,7 +408,7 @@ unsigned char __sdcc_external_startup(void) {
   PDK_SET_SYSCLOCK(SYSCLOCK_ILRC);
   EASY_PDK_CALIBRATE_ILRC(65536, TARGET_VDD_MV);
 #else
-  #error "Unknown F_CPU"
+  #error "F_CPU not currently supported!"
 #endif
 
   return 0;

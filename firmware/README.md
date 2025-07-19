@@ -2,7 +2,7 @@
 
 ### Toolchain:
 - The open-source [Small Device C Compiler (SDCC)](http://sdcc.sourceforge.net/)
-  - Requires version 3.9.0 or newer - version 4.0.0+ preferred
+  - Requires version 4.4.0+
 - The open-source [Easy PDK Programmer](https://github.com/free-pdk/easy-pdk-programmer-software)
   - Requires version 1.3 or newer
 - The open-source [pdk-includes](https://github.com/free-pdk/pdk-includes) repository
@@ -38,5 +38,5 @@ but it should be able to be modified to run on other 16-pin Padauk microcontroll
 Less common devices may require additional device specific include files (pdk/device/*.h) to be supplied.
 
 ### Build Stats
-- Code Size: ~474 words
+- Code Size: ~463 words
 - RAM usage: 22 bytes + stack
