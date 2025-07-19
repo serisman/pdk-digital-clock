@@ -47,7 +47,7 @@ It isn't really suitable for long-term battery operation, as the LED based 7-seg
 
 ### PCB
 - Design Files: [KiCad](pcb-s16/)
-- Orderable: [OSHPARK](https://oshpark.com/shared_projects/jvGgF1gC)
+- Shared: [OSHPARK](https://oshpark.com/shared_projects/jvGgF1gC)
 
 ### Schematic
 (for 16-pin PFS154, PFS173, PMS152, or PMS154C)

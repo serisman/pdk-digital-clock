@@ -1,5 +1,12 @@
 # firmware ([pdk-digital-clock](https://github.com/serisman/pdk-digital-clock/))
 
+A single push button is used to set the time, with the following 'user interface':
+- A short press will temporarily show the current 'seconds'.
+- A medium-press will switch to time config mode.  While in config mode:
+    - A short press will increment the currently selected time value, with rollover.
+    - A medium-press will switch to the next time value, or exit config mode if on the last time value.
+    - A long-press will exit config mode.
+
 ### Toolchain:
 - The open-source [Small Device C Compiler (SDCC)](http://sdcc.sourceforge.net/)
   - Requires version 4.4.0+
