@@ -35,11 +35,12 @@ volatile uint8_t quarter_seconds;
 uint8_t hours_10=1, hours_01=2, minutes_10, minutes_01, seconds_10, seconds_01, am_pm;
 bool started = false;
 
-// Initialize display to --:--
+// Initialize display to ----
+bool blinking = false;
 #if (LAYOUT == 0)
   uint8_t digit1=0b01000000, digit2=0b01000000, digit3=0b01000000, digit4=0b01000000;
   uint8_t current_digit_mask = 0b10001000;
-#elif (LAYOUT == 1)
+#elif (LAYOUT == 1 || LAYOUT == 2)
   uint8_t digit1=0b00000001, digit2=0b00000001, digit3=0b00000001, digit4=0b00000001;
   uint8_t current_digit_mask = 0b11000000;
 #endif
@@ -68,13 +69,18 @@ __asm
   t0sn  _current_digit_mask, #7
     set1.io  f, c
   slc   _current_digit_mask
-#if (LAYOUT == 1)
+#if (LAYOUT == 1 || LAYOUT == 2)
   ;// Rotate a 2nd time
   set0.io  f, c
   t0sn  _current_digit_mask, #7
     set1.io  f, c
   slc   _current_digit_mask
 #endif
+
+  ;// Note:
+  ;//   LAYOUT 2's blink segments are controlled by Pins PA4:SR_LATCH/Anode and PA3:SR_DATA/Cathode that are also used by the shift register.
+  ;//   We need to set PA4:SR_LATCH/Anode low here (as late as possible) to temporarily disable the blink segments so the changing PA3:SR_DATA/Anode line doesn't cause them to flicker.
+	set0.io  _REG(PIN_SR_LATCH), #_BIT(PIN_SR_LATCH)
 
 	;// Shift out /EN for all digits to 74HC595
 	mov   a, _current_digit_mask
@@ -89,6 +95,10 @@ __asm
 	sl    __tmp
 	dzsn  a
 		goto  00001$
+#if (LAYOUT == 2)
+	set0.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
+	t1sn  _blink, #0    ;// If currently blinking, skip next line that would otherwise set PA3:SR_DATA/Cathode high again (which would disable the blink segments)
+#endif
 	set1.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
 
 	;// Get the current digit's segments
@@ -101,7 +111,7 @@ __asm
 		mov   a, _digit3
 	t0sn  _current_digit_mask, #3
 		mov   a, _digit4
-#elif (LAYOUT == 1)
+#elif (LAYOUT == 1 || LAYOUT == 2)
 	t0sn  _current_digit_mask, #6
 		mov   a, _digit1
 	t0sn  _current_digit_mask, #4
@@ -118,15 +128,13 @@ __asm
 	mov   a, #0b00000000
 	mov.io   _REG(PORT_SEGMENTS), a
 
-	;// Latch 74HC595 - Enables the digit that was set low
+	;// Latch 74HC595 - Enables the digit that was set low.  For LAYOUT 2, this also re-enables the blink segments (if PA3:SR_DATA/Cathode is still low)
 	set1.io  _REG(PIN_SR_LATCH), #_BIT(PIN_SR_LATCH)
 
 	;// Enable the current digit's segments
 	mov   a, __tmp
 	mov.io   _REG(PORT_SEGMENTS), a
 	engint
-
-	set0.io  _REG(PIN_SR_LATCH), #_BIT(PIN_SR_LATCH)
 
 __endasm;
 }
@@ -173,7 +181,7 @@ __asm
 	ret   #0b00000111     ;// 7
 	ret   #0b01111111     ;// 8
 	ret   #0b01101111     ;// 9
-#elif (LAYOUT == 1)
+#elif (LAYOUT == 1 || LAYOUT == 2)
 	//       .bfaedcg     // 5643AS (0.56"), 8401AS (0.80")
 	ret   #0b01111110     ;// 0
 	ret   #0b01000010     ;// 1
@@ -349,9 +357,13 @@ void update_display(void) {
     setBit(digit1,7);
 
 	// Blink the half-second indicator
+	blink = false;
 	if (quarter_seconds & 0b00000010) {
+	  blink = true;
+#if (LAYOUT == 0 || LAYOUT == 1)
 		setBit(digit2,7);
 		setBit(digit4,7);
+#endif
 	}
 }
 

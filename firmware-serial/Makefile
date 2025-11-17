@@ -15,6 +15,10 @@ TARGET_VDD = 3.3
 #LAYOUT = 1
 #DEBUG = 1
 
+# LAYOUT 0 is the original 0.39" display/pcb
+# LAYOUT 1 is a 0.56" display/pcb with alternate pin layout
+# LAYOUT 2 is a 0.80" display/pcb with alternate pin layout, and separate blink segment pins
+
 # ---------------------------------------------------------------------
 
 OUTPUT_NAME = DigitalClockSerial_$(DEVICE)
