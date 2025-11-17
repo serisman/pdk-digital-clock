@@ -97,7 +97,7 @@ __asm
 		goto  00001$
 #if (LAYOUT == 2)
 	set0.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
-	t1sn  _blink, #0    ;// If currently blinking, skip next line that would otherwise set PA3:SR_DATA/Cathode high again (which would disable the blink segments)
+	t1sn  _blinking, #0    ;// If currently blinking, skip next line that would otherwise set PA3:SR_DATA/Cathode high again (which would disable the blink segments)
 #endif
 	set1.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
 
@@ -357,9 +357,9 @@ void update_display(void) {
     setBit(digit1,7);
 
 	// Blink the half-second indicator
-	blink = false;
+	blinking = false;
 	if (quarter_seconds & 0b00000010) {
-	  blink = true;
+	  blinking = true;
 #if (LAYOUT == 0 || LAYOUT == 1)
 		setBit(digit2,7);
 		setBit(digit4,7);
