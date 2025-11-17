@@ -12,11 +12,13 @@ DEVICE = PFS154
 F_CPU = 524288
 TARGET_VDD_MV = 3300
 TARGET_VDD = 3.3
+#LAYOUT = 1
 #DEBUG = 1
 
 # ---------------------------------------------------------------------
 
 OUTPUT_NAME = DigitalClockSerial_$(DEVICE)
+LAYOUT ?= 0
 DEBUG ?= 0
 
 ifeq ($(DEVICE), PFS154)
@@ -38,7 +40,7 @@ SOURCES = main.c
 OBJECTS = $(patsubst %.c,$(BUILD_DIR)/%.rel,$(SOURCES))
 
 # http://sdcc.sourceforge.net/doc/sdccman.pdf
-COMPILE = sdcc -m$(ARCH) -c --std-sdcc11 --opt-code-size -D$(DEVICE) -DF_CPU=$(F_CPU) -DTARGET_VDD_MV=$(TARGET_VDD_MV) -DDEBUG=$(DEBUG) -I.
+COMPILE = sdcc -m$(ARCH) -c --std-sdcc11 --opt-code-size -D$(DEVICE) -DF_CPU=$(F_CPU) -DTARGET_VDD_MV=$(TARGET_VDD_MV) -DLAYOUT=$(LAYOUT) -DDEBUG=$(DEBUG) -I.
 LINK = sdcc -m$(ARCH)
 EASYPDKPROG = easypdkprog
 

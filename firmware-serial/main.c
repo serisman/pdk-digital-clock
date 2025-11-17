@@ -36,8 +36,13 @@ uint8_t hours_10=1, hours_01=2, minutes_10, minutes_01, seconds_10, seconds_01, 
 bool started = false;
 
 // Initialize display to --:--
-uint8_t digit1=0b01000000, digit2=0b01000000, digit3=0b01000000, digit4=0b01000000;
-uint8_t current_digit_mask = 0b10001000;
+#if (LAYOUT == 0)
+  uint8_t digit1=0b01000000, digit2=0b01000000, digit3=0b01000000, digit4=0b01000000;
+  uint8_t current_digit_mask = 0b10001000;
+#elif (LAYOUT == 1)
+  uint8_t digit1=0b00000001, digit2=0b00000001, digit3=0b00000001, digit4=0b00000001;
+  uint8_t current_digit_mask = 0b11000000;
+#endif
 
 uint8_t _tmp, prev_quarter_seconds;
 
@@ -63,6 +68,13 @@ __asm
   t0sn  _current_digit_mask, #7
     set1.io  f, c
   slc   _current_digit_mask
+#if (LAYOUT == 1)
+  ;// Rotate a 2nd time
+  set0.io  f, c
+  t0sn  _current_digit_mask, #7
+    set1.io  f, c
+  slc   _current_digit_mask
+#endif
 
 	;// Shift out /EN for all digits to 74HC595
 	mov   a, _current_digit_mask
@@ -80,6 +92,7 @@ __asm
 	set1.io  _REG(PIN_SR_DATA), #_BIT(PIN_SR_DATA)
 
 	;// Get the current digit's segments
+#if (LAYOUT == 0)
 	t0sn  _current_digit_mask, #0
 		mov   a, _digit1
 	t0sn  _current_digit_mask, #1
@@ -88,6 +101,16 @@ __asm
 		mov   a, _digit3
 	t0sn  _current_digit_mask, #3
 		mov   a, _digit4
+#elif (LAYOUT == 1)
+	t0sn  _current_digit_mask, #6
+		mov   a, _digit1
+	t0sn  _current_digit_mask, #4
+		mov   a, _digit2
+	t0sn  _current_digit_mask, #2
+		mov   a, _digit3
+	t0sn  _current_digit_mask, #0
+		mov   a, _digit4
+#endif
 	mov   __tmp, a
 
 	;// Disable the previous digit's segments
@@ -138,6 +161,8 @@ __asm
 	mov   a, _bcd_to_7segment_PARM_1
 	add   a, #1
 	pcadd a
+#if (LAYOUT == 0)
+  //       .gfedcba     // orig (0.39")
 	ret   #0b00111111     ;// 0
 	ret   #0b00000110     ;// 1
 	ret   #0b01011011     ;// 2
@@ -148,6 +173,19 @@ __asm
 	ret   #0b00000111     ;// 7
 	ret   #0b01111111     ;// 8
 	ret   #0b01101111     ;// 9
+#elif (LAYOUT == 1)
+	//       .bfaedcg     // 5643AS (0.56"), 8401AS (0.80")
+	ret   #0b01111110     ;// 0
+	ret   #0b01000010     ;// 1
+	ret   #0b01011101     ;// 2
+	ret   #0b01010111     ;// 3
+	ret   #0b01100011     ;// 4
+	ret   #0b00110111     ;// 5
+	ret   #0b00111111     ;// 6
+	ret   #0b01010010     ;// 7
+	ret   #0b01111111     ;// 8
+	ret   #0b01110111     ;// 9
+#endif
 __endasm;
 }
 
